@@ -4,6 +4,6 @@
     <p><textarea
                 name="comment"
                 class="text"
-                readonly><?PHP require 'render.php'?>
+                readonly><?PHP require 'service.php'?>
         </textarea></p>
 </form>

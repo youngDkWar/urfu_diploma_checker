@@ -92,6 +92,8 @@ if(isset($data['send'])){
 }
 ?>
 </div>
+
+
 <footer>
     <div id="fl_nm">Версия 1.0.1</div>
     <div id="fl_nm">© ️Powered by Shark and Skyshimmer</div>
