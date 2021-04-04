@@ -1,44 +1,50 @@
 body, html{
-    text-align: center;
     margin: 0;
+    display: grid;
+    justify-items: center;
 }
+footer {
+    display: grid;
+    justify-items: center;
+}
+
 html{
     background: url("/images/bckgrnd.jpg") repeat center 0;
 }
 .container{
+    display: grid;
     background: white;
-    width: 50%;
-    position: relative;
-    left: 25%;
+    width: 55%;
     border-radius: 10px;
     margin-top: 40px;
 }
-.text{
-    height: 600px;
-    width: 80%;
-    font-size: 20px;
-    background: #dfe5e5;
-    border-radius: 10px;
+.img-1{
+    max-width: 100%;
+    margin: 40px 0 0 30px;
+    height: auto;
 }
-.name, .file_form{
-    text-align: left;
-    left: 10%;
-    position: relative;
-    margin-bottom: 30px;
-}
-
 .info{
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 70px;
+    padding: 30px;
 }
-.block{
-    display: inline-block;
-    margin: 40px 10px 50px 10px;
+.box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
     border: solid 3px #0d6bb3;
-    width: 27%;
-    height: 430px;
-    vertical-align: top;
-    font-family: Calibri;
-    font-size: 20px;
+}
+.box-content-name{
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Merriweather Sans', sans-serif;
+}
+.box-content{
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Merriweather Sans', sans-serif;
 }
 .fl_upld{
     vertical-align: top;
@@ -61,7 +67,7 @@ html{
     opacity: 50%;
 }
 #fl_nm{
-    padding: 20px 0;
+    padding: 10px 0;
     color: gray;
 }
 .send{
@@ -104,5 +110,12 @@ html{
     text-align: left;
 }
 
+.text{
+    height: 600px;
+    width: 80%;
+    font-size: 20px;
+    background: #dfe5e5;
+    border-radius: 10px;
+}
 
 

@@ -4,36 +4,37 @@
     <meta charset="utf-8">
     <title>Автопроверка ВКР</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
-    <div class="name"><img style="margin: 40px 0 30px 0" alt="Автопроверка ВКР" src="images/title.png"></div>
-
+    <div class="img-1"><img alt="Автопроверка ВКР" src="images/title.png"></div>
     <div class="info">
-        <div class="block">
-            <h3 style="font-size: 30px">Быстрый анализ текста</h3>
-            <div style="text-align: left; margin: 0 5px 0 5px">Сервис очень быстро найдет все недочеты оформления вашей
-                пояснительной записки, если такие имеются, и покажет вам их.</div>
-        </div>
-        <div class="block">
-            <h3 style="font-size: 30px">Искусственный интелект</h3>
-            <div style="text-align: left; margin: 0 5px 0 5px">Алгоритм проверки
+        <section class="box">
+            <h3 class="box-content-name">Быстрый анализ текста</h3>
+            <p class="box-content">Сервис очень быстро найдет все недочеты оформления вашей
+                пояснительной записки, если такие имеются, и покажет вам их.</p>
+        </section>
+        <section class="box">
+            <h3 class="box-content-name">Искусственный интелект</h3>
+            <p class="box-content">Алгоритм проверки
                 сам понимает тип текста каждой строки документа. Он запросто определит,
-                что перед ним: заголовок, текст, список или вставка кода, и обработает соответствующим образом.</div>
-        </div>
-        <div class="block">
-            <h3 style="font-size: 30px">Абсолютная безопасность</h3>
-            <div style="text-align: left; margin: 0 5px 0 5px">Прикреплённый файл сохраняется на сервисе только на
+                что перед ним: заголовок, текст, список или вставка кода, и обработает соответствующим образом.</p>
+        </section>
+        <section class="box">
+            <h3 class="box-content-name">Абсолютная безопасность</h3>
+            <p class="box-content">Прикреплённый файл сохраняется на сервисе только на
             время выполнения скрипта обработки. Документ недоступен для всех, кроме вас. Поэтому вы можете быть
-            уверены в сохранности ваших данных.</div>
-        </div>
+            уверены в сохранности ваших данных.</p>
+        </section>
     </div>
 
-    <div style="margin: 0 0 20px 48px"><a href='javascript: Doc()' style="text-decoration: none;">
-            <img alt="плюсик" src="images/plus.jpeg" align=left id="img_1" onClick="chg(this.id,'check')">
+    <div><a href='javascript: Doc()' style="text-decoration: none;">
+            <img alt="плюсик" src="images/plus.jpeg" align=left id="img-2" onClick="chg(this.id,'check')">
             <div class="instruction" align=left onClick="chg(this.id,'check')">Возможности</div></a></div>
-    <div id=doc style='text-indent:12pt;display:none'>
+    <div id=doc style='text-indent:12pt; display:none'>
         <ul>
             <li class="description" align="left"><b>Проверка полей: </b>
                 левое - 30 мм; правое - 15 мм; верхнее и нижнее – по 20 мм</li>
