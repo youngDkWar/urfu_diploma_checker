@@ -117,9 +117,10 @@ $codeBracket = new Bracket();
 $codeBracket->regionProperties["w:rFonts"] = new Tag('w:rFonts w:ascii="Courier New" w:hAnsi="Courier New" w:cs="Courier New"/>');
 $codeBracket->regionProperties["w:sz"] = new Tag('w:sz w:val="26"/>');
 $codeBracket = Bracket::Merge($baseBracket, $codeBracket);
-//Корзина подписи к картинке (не отличается от обычного параграфа, но на всякий случай выделен отдельным типом)
+//Корзина подписи к картинке
 $captionBracket = new Bracket();
 $captionBracket = Bracket::Merge($baseBracket, $captionBracket);
+$captionBracket->paragraphProperties["w:jc"] = new Tag('w:jc w:val="center"/>"');
 //Корзина картинки
 $drawingBracket = new Bracket();
 $drawingBracket->forbiddenRegionProperties["w:t>"] = null;
@@ -247,6 +248,13 @@ function checkSectorInformationTags(&$paragraphTags){
     return $problemTagNames;
 }
 
+/* Определяет ID параграфа:
+0 - Обычный абзац
+1 - Заголовок
+2 - Листинг кода
+3 - Оцентрованная подпись к картинке
+4 - Картинка (стиль не имеет значения, текста не должно быть)
+*/
 function getParagraphTypeId(&$paragraph){
     global $previousParagraphType;
     if ($previousParagraphType == 4)
@@ -262,9 +270,35 @@ function getParagraphTypeId(&$paragraph){
     return 0;
 }
 
+/* Проверяет, были ли использованы рекомендуемые стили:
+0 (обычный абзац) - ad
+1 (заголовок) - a5
+2 (листинг кода) - a7
+3 (оцентрованная подпись к картинке) - af0
+4 (картинка) - не имеет значения
+5 (табличный текст) - af2
+*/
+function checkTagsWithStyle($paragraphTags, $previousParagraphType){
+    if ($previousParagraphType === 3){
+        return array_key_exists("w:pStyle", $paragraphTags) &&  $paragraphTags["w:pStyle"]->parameters["w:val"] === "ad";
+    }
+    else {
+        if (array_key_exists("w:pStyle", $paragraphTags)){
+            $styleID = $paragraphTags["w:pStyle"]->parameters["w:val"];
+            return ($styleID === "ad" || $styleID === "a7" || $styleID === "a5" || $styleID === "af0" || $styleID === "af2");
+        }
+    }
+    return false;
+}
+
 function paragraphChecker(&$paragraph){
     global $brackets, $textWithMistake, $previousParagraphType;
+    // Делаем немедленную проверку на использование рекомедованных стилей:
+    if (checkTagsWithStyle($paragraph->paragraphProperties, $previousParagraphType)){
+        return "";
+    }
     $textWithMistake = "";
+    //Определяем тип параграфа
     $bracketIndex = getParagraphTypeId($paragraph);
     foreach($paragraph->regions as $region){
         if (array_key_exists("w:t>", $region)){
@@ -274,12 +308,14 @@ function paragraphChecker(&$paragraph){
         }
     }
     $problemTagNames = [];
+    //Собираем ошибочные теги с параграфа (должны находиться \ не должны находиться) и с регионов (должны находиться \ не должны находиться)
     $problemTagNames += checkTags($paragraph->paragraphProperties, $brackets[$bracketIndex]->paragraphProperties, true);
     $problemTagNames += checkTags($paragraph->paragraphProperties, $brackets[$bracketIndex]->forbiddenParagraphProperties, false);
     foreach ($paragraph->regions as $region){
         $problemTagNames += checkTags($region, $brackets[$bracketIndex]->regionProperties, true);
         $problemTagNames += checkTags($region, $brackets[$bracketIndex]->forbiddenRegionProperties, false);
     }
+    //Дополнительная проверка на секторный параграф, если он замыкает раздел (нужно ли проверять размер полей?)
     if (array_key_exists("w:sectPr", $paragraph->paragraphProperties))
         formSectorLog(checkSectorInformationTags($paragraph->paragraphProperties));
     else
@@ -322,30 +358,30 @@ if ($zip->open($filename)) {
     }
 }
 
-
 $zip = new ZipArchive();
 if ($zip->open($filename)) {
-    if (($index = $zip->locateName("word/footer2.xml")) !== false) {
-        $content = $zip->getFromIndex($index);
-        $unparcedTags = explode("<", $content);
-        $tags = [];
-        for ($i = 0; $i < count($unparcedTags); $i++) {
-            $tag = new Tag($unparcedTags[$i]);
-            $tags[$tag->tagType] = $tag;
-        }
-        if (!array_key_exists(0, $log))
-            array_unshift($log, []);
-        if ($tags["w:instrText>PAGE"] == $footerBracketArray["w:instrText>PAGE"]){
-            if ($tags["w:jc"] != $footerBracketArray["w:jc"])
-                $log[0][" "] = "Нижний колонтитул: нумерация должна идти посередине!";
-        }
-        else {
-            $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине";
+    if ($index = $zip->locateName("word/footer2.xml") === false) {
+        if ($index = $zip->locateName("word/footer1.xml") === false) {
+            $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине(1)";
         }
     }
-    else
-        $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине";
-
+    $content = $zip->getFromIndex($index);
+    $unparcedTags = explode("<", $content);
+    $tags = [];
+    for ($i = 0; $i < count($unparcedTags); $i++) {
+        $tag = new Tag($unparcedTags[$i]);
+        $tags[$tag->tagType] = $tag;
+    }
+    if (!array_key_exists(0, $log))
+        array_unshift($log, []);
+    //Старое сравнение (может быть более точным, требуются эксперименты): $tags["w:instrText>PAGE"] == $footerBracketArray["w:instrText>PAGE"]
+    if (array_key_exists("w:instrText>PAGE", $tags)) {
+        if ($tags["w:jc"] != $footerBracketArray["w:jc"])
+            $log[0][" "] = "Нижний колонтитул: нумерация должна идти посередине!(2)";
+    }
+    else {
+        $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине(3)";
+    }
 }
 
 $zip->close();
