@@ -8,8 +8,7 @@
 <body>
 
 <div class="container">
-    <div class="name"><img style="margin: 40px 0 30px 0" alt="Автопроверка ВКР" src="images/title.png"></div>
-
+    <div class="name img-1"><img style="margin: 40px 0 30px 0" alt="Автопроверка ВКР" src="images/title.png"></div>
     <div class="info">
         <div class="block">
             <h3 style="font-size: 30px">Быстрый анализ текста</h3>
@@ -31,7 +30,7 @@
     </div>
 
     <div style="margin: 0 0 20px 48px"><a href='javascript: Doc()' style="text-decoration: none;">
-            <img alt="плюсик" src="images/plus.jpeg" align=left id="img_1" onClick="chg(this.id,'check')">
+            <img alt="плюсик" src="images/plus.jpeg" align=left id="img-2" onClick="chg(this.id,'check')">
             <div class="instruction" align=left onClick="chg(this.id,'check')">Возможности</div></a></div>
     <div id=doc style='text-indent:12pt;display:none'>
         <ul>
