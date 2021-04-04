@@ -1,3 +1,8 @@
+
+
+
+
+/*
 function Instruction()
 {
     var obj=document.getElementById('instruction');
@@ -26,3 +31,4 @@ function chg(id,chk){
         ch.checked="";
     }
 }
+*/

@@ -14,17 +14,13 @@ html{
 .container{
     display: grid;
     background: white;
-    width: 50%;
+    width: 55%;
     border-radius: 10px;
     margin-top: 40px;
 }
-.name, .file_form{
-    text-align: left;
-    margin-bottom: 30px;
-}
 .img-1{
     max-width: 100%;
-    margin-left: 20px;
+    margin: 40px 0 0 30px;
     height: auto;
 }
 .info{
@@ -33,11 +29,22 @@ html{
     column-gap: 70px;
     padding: 30px;
 }
-
-.block{
+.box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
     border: solid 3px #0d6bb3;
-    font-family: Calibri;
-    font-size: 20px;
+}
+.box-content-name{
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Merriweather Sans', sans-serif;
+}
+.box-content{
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Merriweather Sans', sans-serif;
 }
 .fl_upld{
     vertical-align: top;
