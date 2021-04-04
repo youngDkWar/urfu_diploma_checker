@@ -31,10 +31,10 @@
         </section>
     </div>
 
-    <div><a href='javascript: Doc()' style="text-decoration: none;">
-            <img alt="плюсик" src="images/plus.jpeg" align=left id="img-2" onClick="chg(this.id,'check')">
-            <div class="instruction" align=left onClick="chg(this.id,'check')">Возможности</div></a></div>
-    <div id=doc style='text-indent:12pt; display:none'>
+    <div class="instruction">
+        <span><b class="plus">+</b> Возможности</span>
+    </div>
+    <div class="instruction-list" style='text-indent:12pt; display:none'>
         <ul>
             <li class="description" align="left"><b>Проверка полей: </b>
                 левое - 30 мм; правое - 15 мм; верхнее и нижнее – по 20 мм</li>
@@ -48,13 +48,12 @@
             <li class="description" align="left">Полужирное начертание допустимо только для заголовков</li>
             <li class="description" align="left"><b>Листинг кода: </b>шрифт - Courier New, кегль - 12 пт</li>
         </ul>
-
     </div>
 
-    <div style="margin: 0 0 50px 48px"><a href='javascript: Instruction()' style="text-decoration: none;">
-            <img alt="плюсик" src="images/plus.jpeg" align=left id="img_1" onClick="chg(this.id,'check')">
-            <div class="instruction" align=left onClick="chg(this.id,'check')">Инструкция</div></a></div>
-    <div id=instruction style='text-indent:12pt;display:none'>
+    <div class="instruction">
+        <span><b class="plus">+</b> Инструкция</span>
+    </div>
+    <div class="manual-list" style='text-indent:12pt;display:none'>
         <ol>
             <li class="description" align="left">Нажмите кнопку <b>"Загрузить файл"</b> и выберете документ формата
                 <b>".docx"</b>, чтобы проверить его. Другие форматы недопустимы.</li>
@@ -73,8 +72,11 @@
             этом абзаце.</li>
         </ul>
     </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="scripts/field.js"></script>
+    <script src="scripts/get_lists.js"></script>
+
     <div class="file_form">
         <form action="" enctype="multipart/form-data" method="post" class="form">
             <div class="fl_upld">
@@ -84,14 +86,13 @@
             </div>
         </form>
     </div>
-    <script src="scripts/help.js"></script>
 
-<?PHP
-$data = $_POST;
-if(isset($data['send'])){
-    require "main.php";
-}
-?>
+    <?PHP
+        $data = $_POST;
+        if(isset($data['send'])){
+            require "main.php";
+        }
+    ?>
 </div>
 
 
@@ -99,6 +100,6 @@ if(isset($data['send'])){
     <div id="fl_nm">Версия 1.0.1</div>
     <div id="fl_nm">© ️Powered by Shark and Skyshimmer</div>
 </footer>
-</div>
+
 </body>
 </html>
