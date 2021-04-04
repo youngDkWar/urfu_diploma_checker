@@ -1,9 +1,7 @@
 
-<form style="position: relative">
+<form style="position: relative" class="area">
     <p class="errors" align="left">Найденные ошибки:</p>
-    <p><textarea
-                name="comment"
-                class="text"
-                readonly><?PHP require 'service.php'?>
-        </textarea></p>
+    <textarea name="comment" class="text"  readonly>
+        <?PHP require 'service.php'?>
+    </textarea>
 </form>

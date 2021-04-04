@@ -46,6 +46,36 @@ html{
     font-size: 24px;
     font-family: 'Merriweather Sans', sans-serif;
 }
+.instruction{
+    text-decoration: none;
+    font-family: Calibri;
+    color: #0d6bb3;
+    font-size: 30px;
+    margin-left: 30px;
+    cursor: pointer;
+}
+.instruction:hover{
+    color: lightskyblue;
+}
+.plus{
+    font-size: 33px;
+}
+.manual-list{
+    display: grid;
+}
+.description{
+    font-family: Calibri;
+    font-size: 24px;
+    margin-bottom: 15px;
+    margin-left: 30px;
+}
+.manual{
+    margin: 0 0 30px 15px;
+}
+.file_form{
+    padding: 20px;
+    margin-top: 10px;
+}
 .fl_upld{
     vertical-align: top;
 }
@@ -82,37 +112,25 @@ html{
 .send:hover{
     opacity: 50%;
 }
-.instruction{
-    position: relative;
-    font-family: Calibri;
-    color: #0d6bb3;
-    margin-left: 40px;
-    font-size: 30px;
-    bottom: 7px ;
-}
+
 #img_1{
     margin-left: 10px;
+}
+.area{
+    display: grid;
+    justify-items: center;
 }
 .errors{
     font-family: Calibri;
     font-size: xx-large;
     color: #0d6bb3;
-    margin-left: 10%    ;
 }
-.manual{
-    margin-bottom: 30px;
-}
-.description{
-    font-family: Calibri;
-    font-size: 24px;
-    margin-bottom: 15px;
-    margin-left: 30px;
-    text-align: left;
-}
-
 .text{
+    align-self: center;
     height: 600px;
     width: 80%;
+    padding: 20px;
+    margin-bottom: 40px;
     font-size: 20px;
     background: #dfe5e5;
     border-radius: 10px;
