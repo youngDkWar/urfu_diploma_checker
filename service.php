@@ -357,11 +357,12 @@ if ($zip->open($filename)) {
         }
     }
 }
+$zip->close();
 
 $zip = new ZipArchive();
 if ($zip->open($filename)) {
-    if ($index = $zip->locateName("word/footer2.xml") === false) {
-        if ($index = $zip->locateName("word/footer1.xml") === false) {
+    if (($index = $zip->locateName("word/footer2.xml")) === false) {
+        if (($index = $zip->locateName("word/footer1.xml")) === false) {
             $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине(1)";
         }
     }
@@ -375,7 +376,7 @@ if ($zip->open($filename)) {
     if (!array_key_exists(0, $log))
         array_unshift($log, []);
     //Старое сравнение (может быть более точным, требуются эксперименты): $tags["w:instrText>PAGE"] == $footerBracketArray["w:instrText>PAGE"]
-    if (array_key_exists("w:instrText>PAGE", $tags)) {
+    if (array_key_exists("w:instrText>PAGE", $tags) and $tags["w:t>"]->parameters["text"] == "2") {
         if ($tags["w:jc"] != $footerBracketArray["w:jc"])
             $log[0][" "] = "Нижний колонтитул: нумерация должна идти посередине!(2)";
     }
