@@ -136,6 +136,15 @@ $brackets = array($baseBracket, $headerBracket, $codeBracket, $captionBracket, $
 //Описание корзин
 $bracketsDescription = [0 => "простой абзац", 1 => "заголовок", 2 => "код", 3 => "подпись к картинке", 4 => "картинка"];
 
+//Дополнительная корзина для проверки стиля (если стиль был применён, ничего другого быть не должно):
+$styleBracket = new Bracket();
+foreach (["w:ind", "w:jc", "w:spacing"] as $tag){
+    $styleBracket->forbiddenParagraphProperties[$tag] = null;
+}
+foreach (["w:rFonts", "w:sz", "w:b/>", "w:i/>", "w:strike/>", "w:u", "w:color", "w:highlight"] as $tag){
+    $styleBracket->forbiddenRegionProperties[$tag] = null;
+}
+
 //Теги, относящиеся к разделу целиком (изменение производится ТОЛЬКО разрывом раздела)
 //Отдельный метод и хранилище связано с тем, что процедура их проверки может отличаться от проверки абзацных тегов, а
 //также с отдельным форматом вывода лога
@@ -159,14 +168,21 @@ $log = [];
 //TODO: Сделать вывод лога и внести передачу данных из paragraphChecker
 function formLog($problemTagNames, $bracketType = 0){
     global $pageCounter, $paragraphCounter, $log, $bracketsDescription, $textWithMistake;
-    if (count($problemTagNames) == 0)
-        return;
     if ($textWithMistake == ""){
         if ($bracketType != 4)
             $log[$pageCounter][$paragraphCounter . " абзац: "] = "Предупреждение: эта строка пустая";
         return;
     }
+    if (count($problemTagNames) == 0)
+        return;
+
+    $index = "Абзац ". $paragraphCounter. ' "' . mb_substr($textWithMistake, 0, 20). '"';
     $result = "";
+
+    if (array_key_exists("styleConflict", $problemTagNames)) {
+        $log[$pageCounter][$index] = "Предупреждение: после применения встроенного стиля текст был стилистически изменён (чтобы исправить, достаточно применить стиль к абзацу ещё раз)";
+        return;
+    }
     foreach (array_keys($problemTagNames) as $problemTagName) {
         if ($problemTagName == "w:rFonts") {
             $result .= ", неверный шрифт";
@@ -200,7 +216,7 @@ function formLog($problemTagNames, $bracketType = 0){
             $result .= ", НЕИЗВЕСТНАЯ ОШИБКА";
         }
     }
-    $index = "Абзац ". $paragraphCounter. ' "' . mb_substr($textWithMistake, 0, 20). '"' . " определён как " . $bracketsDescription[$bracketType];
+    $index .= " определён как " . $bracketsDescription[$bracketType];
     $result = "Ошибки: " . substr($result, 2);
     $log[$pageCounter][$index] .= $result;
 }
@@ -279,6 +295,7 @@ function getParagraphTypeId(&$paragraph){
 5 (табличный текст) - af2
 */
 function checkTagsWithStyle($paragraphTags, $previousParagraphType){
+
     if ($previousParagraphType === 3){
         return array_key_exists("w:pStyle", $paragraphTags) &&  $paragraphTags["w:pStyle"]->parameters["w:val"] === "ad";
     }
@@ -292,12 +309,31 @@ function checkTagsWithStyle($paragraphTags, $previousParagraphType){
 }
 
 function paragraphChecker(&$paragraph){
-    global $brackets, $textWithMistake, $previousParagraphType;
-    // Делаем немедленную проверку на использование рекомедованных стилей:
-    if (checkTagsWithStyle($paragraph->paragraphProperties, $previousParagraphType)){
-        return "";
-    }
+    global $brackets, $textWithMistake, $previousParagraphType, $styleBracket;
     $textWithMistake = "";
+    // Делаем немедленную проверку на использование рекомедованных стилей:
+    if (checkTagsWithStyle($paragraph->paragraphProperties, $previousParagraphType)) {
+        $problemTagNames = [];
+        if ($paragraph->paragraphProperties != null)
+            $problemTagNames = array_merge($problemTagNames, checkTags($paragraph->paragraphProperties, $styleBracket->forbiddenParagraphProperties, false));
+        foreach ($paragraph->regions as $region) {
+            if (array_key_exists("w:t>", $region)){
+                $textWithMistake .= $region["w:t>"]->parameters["text"];
+                if (strlen($textWithMistake) >= 60)
+                    break;
+            }
+            if ($region != null) {
+                $problemTagNames = array_merge($problemTagNames, checkTags($region, $styleBracket->forbiddenRegionProperties, false));
+            }
+        }
+        if ($textWithMistake == "") {
+            formLog([]);
+        }
+        if (count($problemTagNames) != 0) {
+            formLog(["styleConflict" => null]);
+        }
+        return;
+    }
     //Определяем тип параграфа
     $bracketIndex = getParagraphTypeId($paragraph);
     foreach($paragraph->regions as $region){
