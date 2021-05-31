@@ -33,7 +33,7 @@
     </div>
 
     <div class="instruction"><span><b class="plus">+</b> Требования</span></div>
-    <div class="instruction-list" style='text-indent:12pt; display:none'>
+    <div class="instruction-list" style='display:none'>
         <ul class="list-of-rules">
             <li><b>Проверка полей: </b>
                 левое - 30 мм; правое - 15 мм; верхнее и нижнее – по 20 мм</li>
@@ -86,19 +86,21 @@
     </div>
 
     <div class="instruction"><span><b class="plus">+</b> Инструкция</span></div>
-    <div class="manual-list" style='text-indent:12pt;display:none'>
-        <div class="title red">Внимание!</div>
-        <div class="instruction-file">Что бы сократить затраты времени на исправление ошибок, рекомендуем скачать файл
-            <a class="download" href="style.docx" download>style.docx</a> в котором
-            уже подготовлены все необходимые стили. Вам необходимо просто перенести весь ваш текст в этот файл и оформить
-            каждый элемент текста, используя заготовленные стили. После каждого исправления, вы можете загружать файл для
-            проверки результата.
+    <div class="manual-list" style='display:none'>
+        <div class="instruction-container" style="margin-bottom: 30px">
+            <div class="title red">Внимание!</div>
+            <div class="instruction-file">Чтобы сократить затраты времени на исправление ошибок, рекомендуем скачать файл
+                <a class="download" href="style.docx" download>style.docx</a>, в котором
+                уже подготовлены все необходимые стили. Вам необходимо просто перенести весь ваш текст в этот файл и оформить
+                каждый элемент текста, используя заготовленные стили. После каждого исправления вы можете загружать файл для
+                проверки результата.
+            </div>
         </div>
-
+        <div class="title">Для того, чтобы воспользоваться сервисом:</div>
         <ol class="list-of-rules">
             <li>Нажмите кнопку <b>"Загрузить файл"</b> и выберете документ формата
                 <b>".docx"</b>, чтобы проверить его. Другие форматы недопустимы</li>
-            <li>Нажмите кнопку <b>"Отправить"</b>, чтобы запустить проверку документа.</li>
+            <li>Нажмите кнопку <b>"Отправить"</b>, чтобы запустить проверку документа</li>
         </ol>
         <img alt="manual" src="images/manual1.jpeg" class="manual">
         <img alt="manual" src="images/manual2.jpeg" class="manual">
@@ -121,8 +123,8 @@
     <div class="file_form">
         <form action="" enctype="multipart/form-data" method="post" class="form">
             <div class="fl_upld">
-                <label><input type="file" name="f" multiple accept=".docx, .doc" id="fl_inp" class="file"></label>
-                <input  type="submit" name="send" value=" " class="send">
+                <label class="pointer"><input type="file" name="f" multiple accept=".docx, .doc" id="fl_inp" class="file"></label>
+                <input   type="submit" name="send" value=" " class="send pointer" >
                 <div id="fl_nm">Файл не выбран</div>
             </div>
         </form>
@@ -138,7 +140,7 @@
 
 
 <footer>
-    <div id="fl_nm">Версия 1.0.5</div>
+    <div id="fl_nm">Версия 1.0.6</div>
     <div id="fl_nm">© ️Powered by Shark and Skyshimmer</div>
 </footer>
 

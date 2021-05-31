@@ -94,6 +94,7 @@ class Bracket
     }
 }
 
+
 //<editor-fold desc="Brackets">
 // Создание корзин проверки
 // Базовая корзина
@@ -179,10 +180,11 @@ function formLog($problemTagNames, $bracketType = 0){
     $index = "Абзац ". $paragraphCounter. ' "' . mb_substr($textWithMistake, 0, 20). '"';
     $result = "";
 
-    if (array_key_exists("styleConflict", $problemTagNames)) {
-        $log[$pageCounter][$index] = "Предупреждение: после применения встроенного стиля текст был стилистически изменён (чтобы исправить, достаточно применить стиль к абзацу ещё раз)";
-        return;
-    }
+
+if (array_key_exists("styleConflict", $problemTagNames)) {
+    $log[$pageCounter][$index] = "Предупреждение: после применения встроенного стиля текст был стилистически изменён (чтобы исправить, достаточно применить стиль к абзацу ещё раз)";
+    return;
+}
     foreach (array_keys($problemTagNames) as $problemTagName) {
         if ($problemTagName == "w:rFonts") {
             $result .= ", неверный шрифт";
@@ -258,11 +260,16 @@ function checkSectorInformationTags(&$paragraphTags){
     $problemTagNames = [];
     foreach ($sectorTags as $sectorTag){
         if ($paragraphTags[$sectorTag->tagType] != $sectorTag) {
-            array_push($problemTagNames, $sectorTag->tagType);
+            if (!($sectorTag->tagType == "w:pgMar"
+                && $paragraphTags[$sectorTag->tagType]->parameters['w:footer'] == '708'
+                && $paragraphTags[$sectorTag->tagType]->parameters['w:header'] == '708')) {
+                array_push($problemTagNames, $sectorTag->tagType);
+            }
         }
     }
     return $problemTagNames;
 }
+
 
 /* Определяет ID параграфа:
 0 - Обычный абзац
@@ -359,6 +366,7 @@ function paragraphChecker(&$paragraph){
     $previousParagraphType = $bracketIndex;
 }
 
+
 if ($zip->open($filename)) {
     if (($index = $zip->locateName("word/document.xml")) !== false) {
         $content = $zip->getFromIndex($index);
@@ -395,14 +403,8 @@ if ($zip->open($filename)) {
 }
 $zip->close();
 
-$zip = new ZipArchive();
-if ($zip->open($filename)) {
-    if (($index = $zip->locateName("word/footer2.xml")) === false) {
-        if (($index = $zip->locateName("word/footer1.xml")) === false) {
-            $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине(1)";
-        }
-    }
-    $content = $zip->getFromIndex($index);
+function paragraphNumerationChecker($content) {
+    global $log, $footerBracketArray;
     $unparcedTags = explode("<", $content);
     $tags = [];
     for ($i = 0; $i < count($unparcedTags); $i++) {
@@ -414,10 +416,26 @@ if ($zip->open($filename)) {
     //Старое сравнение (может быть более точным, требуются эксперименты): $tags["w:instrText>PAGE"] == $footerBracketArray["w:instrText>PAGE"]
     if (array_key_exists("w:instrText>PAGE", $tags) and $tags["w:t>"]->parameters["text"] == "2") {
         if ($tags["w:jc"] != $footerBracketArray["w:jc"])
-            $log[0][" "] = "Нижний колонтитул: нумерация должна идти посередине!(2)";
+            return "Нижний колонтитул: нумерация должна идти посередине!(2)";
     }
     else {
-        $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине(3)";
+        return "Нижний колонтитул: не реализована нумерация страниц снизу посередине(3)";
+    }
+    return null;
+}
+
+//Проверка нумерации
+$zip = new ZipArchive();
+if ($zip->open($filename)) {
+    if (!($index = $zip->locateName("word/footer2.xml"))
+        && !($index = $zip->locateName("word/footer1.xml"))) {
+        $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине(1)";
+    }
+    else {
+        $checkMessage = paragraphNumerationChecker($zip->getFromIndex($index));
+        if ($checkMessage) {
+            $log[0][" "] = $checkMessage;
+        }
     }
 }
 
