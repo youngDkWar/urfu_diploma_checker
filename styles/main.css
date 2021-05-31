@@ -13,10 +13,12 @@ html{
 }
 .container{
     display: grid;
+    overflow: hidden;
     background: white;
-    width: 55%;
+    width: 70%;
     border-radius: 10px;
     margin-top: 40px;
+    min-width: 913px;
 }
 .img-1{
     max-width: 100%;
@@ -38,21 +40,23 @@ html{
 }
 .box-content-name{
     text-align: center;
+    word-wrap: break-word;
     font-size: 30px;
-    font-family: 'Merriweather Sans', sans-serif;
+    font-family: Calibri, sans-serif;
 }
 .box-content{
     text-align: center;
-    font-size: 24px;
-    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 26px;
+    font-family: Calibri, sans-serif;
 }
 .instruction{
     text-decoration: none;
-    font-family: Calibri;
+    font-family: Calibri, 'sans-serif';
     color: #0d6bb3;
     font-size: 30px;
     margin-left: 30px;
     cursor: pointer;
+
 }
 .instruction:hover{
     color: lightskyblue;
@@ -63,14 +67,47 @@ html{
 .manual-list{
     display: grid;
 }
-.description{
-    font-family: Calibri;
+.list-of-rules{
+    margin-bottom: 35px;
+}
+.list-of-rules li{
+    font-family: Calibri, "sans-serif";
     font-size: 24px;
     margin-bottom: 15px;
     margin-left: 30px;
+    text-align: left;
+    word-wrap: anywhere;
+}
+.title{
+    font-family: Calibri, "sans-serif";
+    font-size: 30px;
+    margin-bottom: 15px;
+    margin-left: 30px;
+    text-align: left;
+    color: #0d6bb3;
+}
+.red{
+    color: red;
+    text-align: center;
+}
+.instruction-file{
+    font-family: Calibri, "sans-serif";
+    max-width: 90%;
+    font-size: 24px;
+    margin: 15px auto;
+    text-align: left;
+}
+.download{
+    text-decoration: none;
+    color: #0d6bb3;
+}
+.download:hover{
+    color: lightskyblue;
 }
 .manual{
-    margin: 0 0 30px 15px;
+    display: block;
+    margin: auto;
+    margin-bottom: 25px;
 }
 .file_form{
     padding: 20px;
@@ -87,7 +124,7 @@ html{
     height: 76px;
     padding: 27px 140px;
     border-radius:3px;
-    font-family: Calibri;
+    font-family: Calibri, 'sans-serif';
     background: url("/images/load.png");
     text-align: center;
     transition: 0.2s linear;
@@ -104,7 +141,7 @@ html{
     position: relative;
     width: 281px;
     height: 76px;
-    font-family: Calibri;
+    font-family: Calibri, 'sans-serif';
     background: url("/images/send.png");
     border: none;
     transition: 0.2s linear;
@@ -121,7 +158,7 @@ html{
     justify-items: center;
 }
 .errors{
-    font-family: Calibri;
+    font-family: Calibri, 'sans-serif';
     font-size: xx-large;
     color: #0d6bb3;
 }
