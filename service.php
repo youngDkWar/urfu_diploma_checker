@@ -94,7 +94,6 @@ class Bracket
     }
 }
 
-
 //<editor-fold desc="Brackets">
 // Создание корзин проверки
 // Базовая корзина
@@ -165,10 +164,23 @@ $paragraphCounter = 1;
 $previousParagraphType = -1;
 $textWithMistake = "";
 $log = [];
+$problemTagDescriptions = [
+    "w:rFonts" => "неверный шрифт",
+    "w:sz" => "неверный размер шрифта",
+    "w:jc" => "неправильное выравнивание по ширине",
+    "w:ind" => "неверный оступ (должны быть 1,25 слева и 1,5 справа)",
+    "w:spacing" => "неправильный междустрочный интервал (1,5; убедитесь, что интервал есть лишь после абзаца)",
+    "w:b/>" => ", полужирный шрифт (его быть не должно)",
+    "w:i/>" => "наклонный шрифт (его быть не должно)",
+    "w:strike/>" => "перечёркнутый текст (его быть не должно)",
+    "w:u" => "подчёркнутый текст (его быть не должно)",
+    "w:color" => "неправильный цвет текста (должен быть чёрный)",
+    "w:highlight" => "неправильная заливка фона текста (должна быть белой)",
+    "w:t>" => "в этом абзаце не должно быть текста",
+];
 
-//TODO: Сделать вывод лога и внести передачу данных из paragraphChecker
 function formLog($problemTagNames, $bracketType = 0){
-    global $pageCounter, $paragraphCounter, $log, $bracketsDescription, $textWithMistake;
+    global $pageCounter, $paragraphCounter, $log, $bracketsDescription, $textWithMistake, $problemTagDescriptions;
     if ($textWithMistake == ""){
         if ($bracketType != 4)
             $log[$pageCounter][$paragraphCounter . " абзац: "] = "Предупреждение: эта строка пустая";
@@ -177,48 +189,21 @@ function formLog($problemTagNames, $bracketType = 0){
     if (count($problemTagNames) == 0)
         return;
 
-    $index = "Абзац ". $paragraphCounter. ' "' . mb_substr($textWithMistake, 0, 20). '"';
+    $index = "Абзац ". $paragraphCounter. ' "' . mb_substr($textWithMistake, 0, 20). '"' . " определён как " . $bracketsDescription[$bracketType];
     $result = "";
 
-
-if (array_key_exists("styleConflict", $problemTagNames)) {
-    $log[$pageCounter][$index] = "Предупреждение: после применения встроенного стиля текст был стилистически изменён (чтобы исправить, достаточно применить стиль к абзацу ещё раз)";
-    return;
-}
+    if (array_key_exists("styleConflict", $problemTagNames)) {
+        $log[$pageCounter][$index] = "Предупреждение: после применения встроенного стиля текст был стилистически изменён (чтобы исправить, достаточно применить стиль к абзацу ещё раз) \n";
+        unset($problemTagNames["styleConflict"]);
+    }
     foreach (array_keys($problemTagNames) as $problemTagName) {
-        if ($problemTagName == "w:rFonts") {
-            $result .= ", неверный шрифт";
-        } elseif ($problemTagName == "w:sz") {
-            $result .= ", неверный размер шрифта";
-        } elseif ($problemTagName == "w:jc") {
-            $result .= ", неправильное выравнивание по ширине";
-        } elseif ($problemTagName == "w:ind") {
-            $result .= ", неверный оступ (должны быть 1,25 слева и 1,5 справа)";
-        } elseif ($problemTagName == "w:spacing") {
-            $result .= ", неправильный междустрочный интервал (1,5; убедитесь, что интервал есть лишь после абзаца)";
-        } elseif ($problemTagName == "w:b/>") {
-            if ($problemTagNames[$problemTagName] === null)
-                $result .= ", полужирный шрифт (его быть не должно)";
-            else
-                $result .= ", здесь должен быть полужирный шрифт";
-        } elseif ($problemTagName == "w:i/>") {
-            $result .= ", наклонный шрифт (его быть не должно)";
-        } elseif ($problemTagName == "w:strike/>") {
-            $result .= ", перечёркнутый текст (его быть не должно)";
-        } elseif ($problemTagName == "w:u") {
-            $result .= ", подчёркнутый текст (его быть не должно)";
-        } elseif ($problemTagName == "w:color") {
-            $result .= ", неправильный цвет текста (должен быть чёрный)";
-        } elseif ($problemTagName == "w:highlight") {
-            $result .= ", неправильная заливка фона текста (должна быть белой)";
-        } elseif ($problemTagName == "w:t>") {
-            $result .= ", в этом абзаце не должно быть текста";
+        if (array_key_exists($problemTagName, $problemTagDescriptions)) {
+            $result .= ", " . $problemTagDescriptions[$problemTagName];
         }
         else {
-            $result .= ", НЕИЗВЕСТНАЯ ОШИБКА";
+            $result .= ", " . "НЕИЗВЕСТНАЯ ОШИБКА";
         }
     }
-    $index .= " определён как " . $bracketsDescription[$bracketType];
     $result = "Ошибки: " . substr($result, 2);
     $log[$pageCounter][$index] .= $result;
 }
@@ -269,7 +254,6 @@ function checkSectorInformationTags(&$paragraphTags){
     }
     return $problemTagNames;
 }
-
 
 /* Определяет ID параграфа:
 0 - Обычный абзац
@@ -337,7 +321,8 @@ function paragraphChecker(&$paragraph){
             formLog([]);
         }
         if (count($problemTagNames) != 0) {
-            formLog(["styleConflict" => null]);
+            $problemTagNames["styleConflict"] = null;
+            formLog($problemTagNames);
         }
         return;
     }
@@ -363,38 +348,39 @@ function paragraphChecker(&$paragraph){
         formSectorLog(checkSectorInformationTags($paragraph->paragraphProperties));
     else
         formLog($problemTagNames, $bracketIndex);
-    $previousParagraphType = $bracketIndex;
+
+$previousParagraphType = $bracketIndex;
 }
 
-
+$isTitlePage = true;
 if ($zip->open($filename)) {
     if (($index = $zip->locateName("word/document.xml")) !== false) {
         $content = $zip->getFromIndex($index);
         $tags = explode("<", $content);
         $currentParagraph = new Paragraph();
         $isOnRegions = false;
-        for ($currentTagIndex = 0; $currentTagIndex < count($tags); $currentTagIndex++){
+        $totalTags = count($tags);
+        for ($currentTagIndex = 0; $currentTagIndex < count($tags); $currentTagIndex++) {
             $tag = new Tag($tags[$currentTagIndex]);
-            if ($tag->tagType == "w:r" or $tag->tagType == "w:r>"){
+            if (substr($tag->tagType, 0, 23) == "w:lastRenderedPageBreak") {
+                $isTitlePage = false;
+                $paragraphCounter = 1;
+            }
+            if ($tag->tagType == "w:r" or $tag->tagType == "w:r>") {
                 $isOnRegions = true;
                 array_push($currentParagraph->regions, array($tag->tagType => $tag));
-            }
-            else if ($tag->tagType == "/w:p>" or count($tags) - $currentTagIndex == 1){
+            } else if ($tag->tagType == "/w:p>" or count($tags) - $currentTagIndex == 1) {
                 array_push($currentParagraph->paragraphProperties, $tag);
-                paragraphChecker($currentParagraph);
+                if (!$isTitlePage) {
+                    paragraphChecker($currentParagraph);
+                }
                 $currentParagraph = new Paragraph();
                 $paragraphCounter++;
                 $isOnRegions = false;
-            }
-            else {
-                if ($tag->tagType == "w:lastRenderedPageBreak/>"){
-                    $pageCounter++;
-                    $log[$pageCounter] = [];
-                }
-                if ($isOnRegions){
+            } else {
+                if ($isOnRegions) {
                     $currentParagraph->regions[endKey($currentParagraph->regions)][$tag->tagType] = $tag;
-                }
-                else {
+                } else {
                     $currentParagraph->paragraphProperties[$tag->tagType] = $tag;
                 }
             }
@@ -414,7 +400,7 @@ function paragraphNumerationChecker($content) {
     if (!array_key_exists(0, $log))
         array_unshift($log, []);
     //Старое сравнение (может быть более точным, требуются эксперименты): $tags["w:instrText>PAGE"] == $footerBracketArray["w:instrText>PAGE"]
-    if (array_key_exists("w:instrText>PAGE", $tags) and $tags["w:t>"]->parameters["text"] == "2") {
+    if (array_key_exists("w:instrText>PAGE", $tags)) {
         if ($tags["w:jc"] != $footerBracketArray["w:jc"])
             return "Нижний колонтитул: нумерация должна идти посередине!(2)";
     }
@@ -429,12 +415,12 @@ $zip = new ZipArchive();
 if ($zip->open($filename)) {
     if (!($index = $zip->locateName("word/footer2.xml"))
         && !($index = $zip->locateName("word/footer1.xml"))) {
-        $log[0][" "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине(1)";
+        $log[0]["Нумерация: "] = "Нижний колонтитул: не реализована нумерация страниц снизу посередине(1)";
     }
     else {
         $checkMessage = paragraphNumerationChecker($zip->getFromIndex($index));
-        if ($checkMessage) {
-            $log[0][" "] = $checkMessage;
+        if ($checkMessage !== null) {
+            $log[0]["Нумерация: "] = $checkMessage;
         }
     }
 }
@@ -442,8 +428,17 @@ if ($zip->open($filename)) {
 $zip->close();
 unlink($filename);
 
-foreach ($log as $page) {
-    foreach ($page as $key => $value){
-        echo $key . "\n" . $value ."\n" . "\n";
+if (!$log[0]) {
+    unset($log[0]);
+}
+
+if ($isTitlePage) {
+    echo "В вашей работе нет титульного листа, проверка невозможна! (титульный лист должен находиться в отдельном от работы разделе)";
+}
+else {
+    foreach ($log as $page) {
+        foreach ($page as $key => $value) {
+            echo $key . "\n" . $value . "\n" . "\n";
+        }
     }
 }

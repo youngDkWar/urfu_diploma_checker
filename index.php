@@ -38,6 +38,7 @@
             <li><b>Проверка полей: </b>
                 левое - 30 мм; правое - 15 мм; верхнее и нижнее – по 20 мм</li>
             <li><b>Нумерация документа: </b>внизу страницы по центру</li>
+            <li><b class="red">Титульный лист программой игнорируется!</b></li>
         </ul>
         <div class="title">Для основного текста:</div>
         <ul class="list-of-rules">
@@ -95,6 +96,12 @@
                 каждый элемент текста, используя заготовленные стили. После каждого исправления вы можете загружать файл для
                 проверки результата.
             </div>
+            <div class="instruction-file">Для корректной работы программы используйте <b class="red">последнюю версию
+                    "Microsoft word"</b>, которая предоставляется бесплатно всем студентам УрФУ.
+                    Иначе возможны ошибки программы. </div>
+            <div class="instruction-file">Пожалуйста, сообщайте обо всех ошибках на почту
+                <span class="download">suppdiplomachecker@gmail.com</span>. В письме опишите вашу проблему (по возможности
+            добавьте скриншоты). Мы сообщим об исправлении ошибки в ответном письме.</div>
         </div>
         <div class="title">Для того, чтобы воспользоваться сервисом:</div>
         <ol class="list-of-rules">
@@ -123,7 +130,7 @@
     <div class="file_form">
         <form action="" enctype="multipart/form-data" method="post" class="form">
             <div class="fl_upld">
-                <label class="pointer"><input type="file" name="f" multiple accept=".docx, .doc" id="fl_inp" class="file"></label>
+                <label class="pointer"><input type="file" name="f" multiple accept=".docx" id="fl_inp" class="file"></label>
                 <input   type="submit" name="send" value=" " class="send pointer" >
                 <div id="fl_nm">Файл не выбран</div>
             </div>
@@ -140,7 +147,8 @@
 
 
 <footer>
-    <div id="fl_nm">Версия 1.0.6</div>
+    <div id="fl_nm">Версия 1.0.7 beta</div>
+    <div id="fl_nm">suppdiplomachecker@gmail.com</div>
     <div id="fl_nm">© ️Powered by Shark and Skyshimmer</div>
 </footer>
 
