@@ -364,7 +364,6 @@ if ($zip->open($filename)) {
             $tag = new Tag($tags[$currentTagIndex]);
             if (substr($tag->tagType, 0, 23) == "w:lastRenderedPageBreak") {
                 $isTitlePage = false;
-                $paragraphCounter = 1;
             }
             if ($tag->tagType == "w:r" or $tag->tagType == "w:r>") {
                 $isOnRegions = true;
@@ -433,12 +432,10 @@ if (!$log[0]) {
 }
 
 if ($isTitlePage) {
-    echo "В вашей работе нет титульного листа, проверка невозможна! (титульный лист должен находиться в отдельном от работы разделе)";
+    echo "В вашей работе либо нет титульного листа, либо она только из него и состоит! (титульный лист и основная работа должны быть в разных секторах)\n";
 }
-else {
-    foreach ($log as $page) {
+foreach ($log as $page) {
         foreach ($page as $key => $value) {
             echo $key . "\n" . $value . "\n" . "\n";
         }
     }
-}
