@@ -5,11 +5,12 @@
     <title>Автопроверка ВКР</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" type="image/png" href="images/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
+<main class="container">
     <div class="img-1"><img alt="Автопроверка ВКР" src="images/title.png"></div>
     <div class="info">
         <section class="box">
@@ -31,44 +32,93 @@
         </section>
     </div>
 
-    <div class="instruction">
-        <span><b class="plus">+</b> Возможности</span>
-    </div>
-    <div class="instruction-list" style='text-indent:12pt; display:none'>
-        <ul>
-            <li class="description" align="left"><b>Проверка полей: </b>
+    <div class="instruction"><span><b class="plus">+</b> Требования</span></div>
+    <div class="instruction-list" style='display:none'>
+        <ul class="list-of-rules">
+            <li><b>Проверка полей: </b>
                 левое - 30 мм; правое - 15 мм; верхнее и нижнее – по 20 мм</li>
-            <li class="description" align="left"><b>Нумерация документа: </b>внизу страницы по центру</li>
-            <li class="description" align="left"><b>Гарнитура: </b>Times New Roman</li>
-            <li class="description" align="left"><b>Кегль: </b>14 пт</li>
-            <li class="description" align="left"><b>Интервал: </b>1,5</li>
-            <li class="description" align="left"><b>Цвет шрифта: </b>чёрный</li>
-            <li class="description" align="left"><b>Начертание: </b>прямое</li>
-            <li class="description" align="left"><b>Отступ первой строки: </b>1,25 см</li>
-            <li class="description" align="left">Полужирное начертание допустимо только для заголовков</li>
-            <li class="description" align="left"><b>Листинг кода: </b>шрифт - Courier New, кегль - 12 пт</li>
+            <li><b>Нумерация документа: </b>внизу страницы по центру</li>
+            <li><b class="red">Титульный лист программой игнорируется!</b></li>
+        </ul>
+        <div class="title">Для основного текста:</div>
+        <ul class="list-of-rules">
+            <li><b>Гарнитура: </b>Times New Roman</li>
+            <li><b>Кегль: </b>14 пт</li>
+            <li><b>Отступ первой строки: </b>1,25 см</li>
+            <li><b>Интервал: </b>1,5</li>
+            <li><b>Цвет шрифта: </b>чёрный</li>
+            <li><b>Начертание: </b>прямое</li>
+            <li><b>Выравнивание: </b>по ширине</li>
+        </ul>
+        <div class="title">Для заголовков</div>
+        <ul class="list-of-rules">
+            <li><b>Гарнитура: </b>Times New Roman</li>
+            <li><b>Кегль: </b>14 пт</li>
+            <li><b>Отступ первой строки: </b>1,25 см</li>
+            <li><b>Интервал: </b>1,5</li>
+            <li><b>Цвет шрифта: </b>чёрный</li>
+            <li><b>Начертание: </b>полужирное</li>
+            <li><b>Выравнивание: </b>по левому краю</li>
+        </ul>
+        <div class="title">Для заголовка раздела</div>
+        <ul class="list-of-rules">
+            <li>Оформление совпадает со стилем заголовка, но весь текст должен быть написан<b> ЗАГЛАВНЫМИ</b> буквами</li>
+        </ul>
+        <div class="title">Листинг кода:</div>
+        <ul class="list-of-rules">
+            <li><b>Гарнитура: </b>Courier New</li>
+            <li><b>Кегль: </b>12 пт</li>
+            <li><b>Отступ первой строки: </b>1,25 см</li>
+            <li><b>Интервал: </b>1,5</li>
+            <li><b>Цвет шрифта: </b>чёрный</li>
+            <li><b>Начертание: </b>прямое</li>
+            <li><b>Выравнивание: </b>по левому краю</li>
+        </ul>
+        <div class="title">Подпись к картинке:</div>
+        <ul class="list-of-rules">
+            <li><b>Гарнитура: </b>Times New Roman</li>
+            <li><b>Кегль: </b>14 пт</li>
+            <li><b>Отступ первой строки: </b>1,25 см</li>
+            <li><b>Интервал: </b>1,5</li>
+            <li><b>Цвет шрифта: </b>чёрный</li>
+            <li><b>Начертание: </b>прямое</li>
+            <li><b>Выравнивание: </b>по центру</li>
         </ul>
     </div>
 
-    <div class="instruction">
-        <span><b class="plus">+</b> Инструкция</span>
-    </div>
-    <div class="manual-list" style='text-indent:12pt;display:none'>
-        <ol>
-            <li class="description" align="left">Нажмите кнопку <b>"Загрузить файл"</b> и выберете документ формата
-                <b>".docx"</b>, чтобы проверить его. Другие форматы недопустимы.</li>
-            <li class="description" align="left">Нажмите кнопку <b>"Отправить"</b>, чтобы запустить проверку документа.</li>
+    <div class="instruction"><span><b class="plus">+</b> Инструкция</span></div>
+    <div class="manual-list" style='display:none'>
+        <div class="instruction-container" style="margin-bottom: 30px">
+            <div class="title red">Внимание!</div>
+            <div class="instruction-file">Чтобы сократить затраты времени на исправление ошибок, рекомендуем скачать файл
+                <a class="download" href="style.docx" download>style.docx</a>, в котором
+                уже подготовлены все необходимые стили. Вам необходимо просто перенести весь ваш текст в этот файл и оформить
+                каждый элемент текста, используя заготовленные стили. После каждого исправления вы можете загружать файл для
+                проверки результата.
+            </div>
+            <div class="instruction-file">Для корректной работы программы используйте <b class="red">последнюю версию
+                    "Microsoft word"</b>, которая предоставляется бесплатно всем студентам УрФУ.
+                    Иначе возможны ошибки программы. </div>
+            <div class="instruction-file">Пожалуйста, сообщайте обо всех ошибках на почту
+                <span class="download">suppdiplomachecker@gmail.com</span>. В письме опишите вашу проблему (по возможности
+            добавьте скриншоты). Мы сообщим об исправлении ошибки в ответном письме.</div>
+        </div>
+        <div class="title">Для того, чтобы воспользоваться сервисом:</div>
+        <ol class="list-of-rules">
+            <li>Нажмите кнопку <b>"Загрузить файл"</b> и выберете документ формата
+                <b>".docx"</b>, чтобы проверить его. Другие форматы недопустимы</li>
+            <li>Нажмите кнопку <b>"Отправить"</b>, чтобы запустить проверку документа</li>
         </ol>
         <img alt="manual" src="images/manual1.jpeg" class="manual">
         <img alt="manual" src="images/manual2.jpeg" class="manual">
-        <ul>
-            <li class="description"><b style="color: rgb(63, 72, 204)">Часть абзаца:</b> первые 15 символов абзаца в двойных
+        <ul class="list-of-rules">
+            <li><b style="color: rgb(63, 72, 204)">Часть абзаца:</b> первые 15 символов абзаца в двойных
                 кавычках. При помощи нее можно отыскать абзац в своём документе, например, при помощи "ctrl + f".</li>
-            <li class="description"><b style="color: rgb(34, 177, 76)">Номер абзаца: </b>номер абзаца в документе.
+            <li><b style="color: rgb(34, 177, 76)">Номер абзаца: </b>номер абзаца в документе.
              Позволяет примерно сориентироваться, где находится данный абзац.</li>
-            <li class="description"><b style="color: rgb(255, 127, 39)">Тип текста: </b>показывает к какому типу
+            <li><b style="color: rgb(255, 127, 39)">Тип текста: </b>показывает к какому типу
             относится данный абзац (заголовок, простой текст, список, картинка, вставка кода или надпись).</li>
-            <li class="description"><b style="color: rgb(237, 28, 36)">Ошибки: </b>список всех найденных ошибок в
+            <li><b style="color: rgb(237, 28, 36)">Ошибки: </b>список всех найденных ошибок в
             этом абзаце.</li>
         </ul>
     </div>
@@ -80,8 +130,8 @@
     <div class="file_form">
         <form action="" enctype="multipart/form-data" method="post" class="form">
             <div class="fl_upld">
-                <label><input type="file" name="f" multiple accept=".docx, .doc" id="fl_inp" class="file"></label>
-                <input  type="submit" name="send" value=" " class="send">
+                <label class="pointer"><input type="file" name="f" multiple accept=".docx" id="fl_inp" class="file"></label>
+                <input   type="submit" name="send" value=" " class="send pointer" >
                 <div id="fl_nm">Файл не выбран</div>
             </div>
         </form>
@@ -93,11 +143,12 @@
             require "main.php";
         }
     ?>
-</div>
+</main>
 
 
 <footer>
-    <div id="fl_nm">Версия 1.0.1</div>
+    <div id="fl_nm">Версия 1.0.7 beta</div>
+    <div id="fl_nm">suppdiplomachecker@gmail.com</div>
     <div id="fl_nm">© ️Powered by Shark and Skyshimmer</div>
 </footer>
 
